@@ -54,11 +54,23 @@
     <!-- TUGAS -->
     <div id="tugas" class="page" style="display:none;">
       <h2>📚 Daftar Tugas</h2>
-      <div class="tugas-list">
-        <p>✔️ Tugas IMK</p>
-        <p>✔️ Tugas Web</p>
-        <p>⏳ Tugas Basis Data</p>
-      </div>
+    <div class="form-tugas">
+  <input type="text" id="JudulTugas" placeholder="Masukan nama tugas">
+  <select id="course">
+    <option value="">Pilih mata kuliah</option>
+    <option>Pemrograman Web</option>
+    <option>Analisis Dan Perancangan Sistem</option>
+    <option>Grafika Komputer</option>
+    <option>Jaringan Komputer</option>
+    <option>Pendidikan Agama Islam</option>
+    <option>Sistem Rekayasa Berkelanjutan</option>
+    <option>Praktikum PBO</option>
+    <option>Praktikum Jaringan</option>
+  </select>
+
+  <button onclick="tambahTugas()">Tambah</button>
+</div>
+      <div class="tugas-list"></div>
     </div>
 
     <!-- KALENDER -->
