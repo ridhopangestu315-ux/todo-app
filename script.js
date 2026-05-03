@@ -7,4 +7,7 @@ function showPage(pageId, el) {
   const menuItems = document.querySelectorAll('.sidebar li');
   menuItems.forEach(item => item.classList.remove('active'));
 
-  el.classList.add('active');
+  if (el) {
+    el.classList.add('active');
+  }
+}
