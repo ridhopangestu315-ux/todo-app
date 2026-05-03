@@ -7,7 +7,6 @@
 <link rel="stylesheet" href="home.css">
 </head>
 <body>
-<script src="script.js"></script>
 <div class="container">
 
   <!-- SIDEBAR -->
@@ -23,56 +22,58 @@
 
   <!-- MAIN -->
   <div class="main">
-
     <div class="header">
       <h1>Selamat Datang Mahasiswa 👋</h1>
       <div class="profile">🧑‍💻</div>
     </div>
 
     <!-- DASHBOARD -->
-    <div id="dashboard" class="page">
-      <div class="start">
-        <div class="card blue">
-          <p>Total Tugas</p>
-          <h2>5</h2>
-        </div>
-        <div class="card yellow">
-          <p>Belum Selesai</p>
-          <h2>3</h2>
-        </div>
-        <div class="card green">
-          <p>Selesai</p>
-          <h2>2</h2>
-        </div>
-        <div class="card red">
-          <p>Deadline Dekat</p>
-          <h2>1</h2>
-        </div>
-      </div>
+  <div id="dashboard" class="page">
+  <div class="start">
+    <div class="card blue">
+      <p>Total Tugas</p>
+      <h2 id="total">0</h2>
     </div>
-
+    <div class="card yellow">
+      <p>Belum Selesai</p>
+      <h2 id="belum">0</h2>
+    </div>
+    <div class="card green">
+      <p>Selesai</p>
+      <h2 id="selesai">0</h2>
+    </div>
+    <div class="card red">
+      <p>Deadline Dekat</p>
+      <h2 id="deadlineDekat">0</h2>
+    </div>
+  </div>
+  </div>
+  
     <!-- TUGAS -->
     <div id="tugas" class="page" style="display:none;">
       <h2>📚 Daftar Tugas</h2>
     <div class="form-tugas">
   <input type="text" id="JudulTugas" placeholder="Masukan nama tugas">
-  <select id="course">
+
+  <select id="MataKuliah">
     <option value="">Pilih mata kuliah</option>
-    <option>Pemrograman Web</option>
-    <option>Analisis Dan Perancangan Sistem</option>
-    <option>Grafika Komputer</option>
-    <option>Jaringan Komputer</option>
-    <option>Pendidikan Agama Islam</option>
-    <option>Sistem Rekayasa Berkelanjutan</option>
-    <option>Praktikum PBO</option>
-    <option>Praktikum Jaringan</option>
+    <option value="Pemrograman Web">Pemrograman Web</option>
+    <option value="Analisis Dan Perancangan Sistem">Analisis Dan Perancangan Sistem</option>
+    <option value="Grafika Komputer">Grafika Komputer</option>
+    <option value="Jaringan Komputer">Jaringan Komputer</option>
+  <option value="Pendidikan Agama Islam">Pendidikan Agama Islam</option>
+  <option value="Sistem Rekayasa Berkelanjutan">Sistem Rekayasa Berkelanjutan</option>
+  <option value="Praktikum PBO">Praktikum PBO</option>
+  <option value="Praktikum Jaringan">Praktikum Jaringan</option>
   </select>
+
+  <input type="date" id="deadlineInput">
 
   <button onclick="tambahTugas()">Tambah</button>
 </div>
-      <div class="tugas-list"></div>
-    </div>
 
+<div class="tugas-list"></div>
+</div>
     <!-- KALENDER -->
     <div id="kalender" class="page" style="display:none;">
       <h2>📅 Kalender</h2>
@@ -87,5 +88,6 @@
 
   </div>
 </div>
+<script src="script.js"></script>
 </body>
 </html>
