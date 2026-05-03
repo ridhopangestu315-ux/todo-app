@@ -1,55 +1,95 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
-  <title>To-Do Dashboard</title>
-  <link rel="stylesheet" href="home.css">
-  
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>To-Do Dashboard</title>
+<link rel="stylesheet" href="home.css">
 </head>
+
 <body>
 
-  <main class="container">
-    <aside class="sidebar">
-      <h2 class="logo">To-Do list</h2>
-      <nav>
-        <ul>
-          <li class="active">Dashboard</li>
-          <li>Tugas</li>
-          <li>Kalender</li>
-          <li>Pengaturan</li>
-        </ul>
-      </nav>
-    </aside>
+<div class="container">
 
-    <main class="main">
-      <header class="header">
-        <h1>Selamat Datang Mahasiswa 👋</h1>
-        <div class="profile">🧑‍🦰</div>
-      </header>
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <h2 class="logo">To-Do List</h2>
+    <ul>
+      <li class="active" onclick="showPage('dashboard', this)">Dashboard</li>
+      <li onclick="showPage('tugas', this)">Tugas</li>
+      <li onclick="showPage('kalender', this)">Kalender</li>
+      <li onclick="showPage('pengaturan', this)">Pengaturan</li>
+    </ul>
+  </aside>
 
-      <section class="start">
+  <!-- MAIN -->
+  <div class="main">
+
+    <div class="header">
+      <h1>Selamat Datang Mahasiswa 👋</h1>
+      <div class="profile">🧑‍💻</div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div id="dashboard" class="page">
+      <div class="start">
         <div class="card blue">
           <p>Total Tugas</p>
           <h2>5</h2>
         </div>
-
         <div class="card yellow">
           <p>Belum Selesai</p>
           <h2>3</h2>
         </div>
+        <div class="card green">
+          <p>Selesai</p>
+          <h2>2</h2>
+        </div>
+        <div class="card red">
+          <p>Deadline Dekat</p>
+          <h2>1</h2>
+        </div>
+      </div>
+    </div>
 
-          <div class="card green">
-            <p>Selesai</p>
-            <h2>2</h2>
-          </div>
+    <!-- TUGAS -->
+    <div id="tugas" class="page" style="display:none;">
+      <h2>📚 Daftar Tugas</h2>
+      <div class="tugas-list">
+        <p>✔️ Tugas IMK</p>
+        <p>✔️ Tugas Web</p>
+        <p>⏳ Tugas Basis Data</p>
+      </div>
+    </div>
 
-          <div class="card red">
-            <p>Deadline Dekat</p>
-            <h2>1</h2>
-          </div>
-      </section>
-    </main>
+    <!-- KALENDER -->
+    <div id="kalender" class="page" style="display:none;">
+      <h2>📅 Kalender</h2>
+      <p>Belum ada jadwal</p>
+    </div>
+
+    <!-- PENGATURAN -->
+    <div id="pengaturan" class="page" style="display:none;">
+      <h2>⚙️ Pengaturan</h2>
+      <p>Pengaturan akun & preferensi</p>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function showPage(pageId, el) {
+  const pages = document.querySelectorAll('.page');
+  pages.forEach(page => page.style.display = 'none');
+
+  document.getElementById(pageId).style.display = 'block';
+
+  const menuItems = document.querySelectorAll('.sidebar li');
+  menuItems.forEach(item => item.classList.remove('active'));
+
+  el.classList.add('active');
+}
+</script>
+
 </body>
 </html>
