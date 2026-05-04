@@ -1,9 +1,6 @@
-// DATA GLOBAL
 var semuaDataTugas = JSON.parse(localStorage.getItem("tugas")) || [];
 
 
-// NAVIGASI HALAMAN
-// =======================
 function showPage(halamanYangDituju, menuYangDiklik) {
 
   document.querySelectorAll('.page').forEach(function(halaman) {
@@ -25,7 +22,6 @@ function showPage(halamanYangDituju, menuYangDiklik) {
   }
 }
 
-// TAMBAH TUGAS
 function tambahTugas() {
 
   var judulTugas    = document.getElementById("JudulTugas").value;
@@ -51,7 +47,6 @@ function tambahTugas() {
   perbaruiDashboard();
 }
 
-// TAMPILKAN TUGAS
 function tampilkanTugas() {
 
   var kotak = document.querySelector(".tugas-list");
@@ -76,7 +71,6 @@ function tampilkanTugas() {
   });
 }
 
-// SELESAI / HAPUS
 function toggleSelesai(index) {
   semuaDataTugas[index].selesai = !semuaDataTugas[index].selesai;
   simpanData();
@@ -91,13 +85,11 @@ function hapus(index) {
   perbaruiDashboard();
 }
 
-// KALENDER
 function tampilkanKalender() {
 
   var kalender = document.getElementById("isiKalender");
   kalender.innerHTML = "";
 
-  // urutkan berdasarkan tanggal
   var sorted = semuaDataTugas.sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
 
   sorted.forEach(function(tugas) {
@@ -116,7 +108,6 @@ function tampilkanKalender() {
   }
 }
 
-// DASHBOARD
 function perbaruiDashboard() {
 
   var total = semuaDataTugas.length;
@@ -139,11 +130,9 @@ function perbaruiDashboard() {
   document.getElementById("deadlineDekat").textContent = deadlineDekat;
 }
 
-// LOCAL STORAGE
 function simpanData() {
   localStorage.setItem("tugas", JSON.stringify(semuaDataTugas));
 }
 
-// INIT AWAL
 tampilkanTugas();
 perbaruiDashboard();
