@@ -1,3 +1,9 @@
+// DATA GLOBAL
+var semuaDataTugas = JSON.parse(localStorage.getItem("tugas")) || [];
+
+
+// NAVIGASI HALAMAN
+// =======================
 function showPage(halamanYangDituju, menuYangDiklik) {
 
   document.querySelectorAll('.page').forEach(function(halaman) {
@@ -13,9 +19,13 @@ function showPage(halamanYangDituju, menuYangDiklik) {
   if (menuYangDiklik) {
     menuYangDiklik.classList.add('active');
   }
+
+  if (halamanYangDituju === "kalender") {
+    tampilkanKalender();
+  }
 }
 
-
+// TAMBAH TUGAS
 function tambahTugas() {
 
   var judulTugas    = document.getElementById("JudulTugas").value;
@@ -27,84 +37,113 @@ function tambahTugas() {
     return;
   }
 
-  var kotakDaftarTugas = document.querySelector(".tugas-list");
+  var data = {
+    judul: judulTugas,
+    matkul: matkulTugas,
+    deadline: deadlineTugas,
+    selesai: false
+  };
 
-  var barisTugasBaru = document.createElement("p");
+  semuaDataTugas.push(data);
+  simpanData();
 
-  barisTugasBaru.innerHTML = `
-    <span class="task-text">⏳ ${judulTugas} - ${matkulTugas} (${deadlineTugas})</span>
-    <div>
-      <button onclick="selesaiTugas(this)">✔️</button>
-      <button onclick="hapusTugas(this)">❌</button>
-    </div>
-  `;
-
-  kotakDaftarTugas.appendChild(barisTugasBaru);
-
-  document.getElementById("JudulTugas").value    = "";
-  document.getElementById("MataKuliah").value    = "";
-  document.getElementById("deadlineInput").value = "";
-
+  tampilkanTugas();
   perbaruiDashboard();
 }
 
+// TAMPILKAN TUGAS
+function tampilkanTugas() {
 
-function selesaiTugas(tombolYangDiklik) {
+  var kotak = document.querySelector(".tugas-list");
+  kotak.innerHTML = "";
 
-  var teksTugas = tombolYangDiklik.parentElement.parentElement.querySelector(".task-text");
+  semuaDataTugas.forEach(function(tugas, index) {
 
-  teksTugas.style.textDecoration = "line-through";
-  teksTugas.style.color = "gray";
+    var el = document.createElement("p");
 
-  if (!teksTugas.textContent.includes("✔️")) {
-    teksTugas.textContent = teksTugas.textContent.replace("⏳", "✔️");
+    el.innerHTML = `
+      <span style="${tugas.selesai ? 'text-decoration:line-through;color:gray;' : ''}">
+        ${tugas.selesai ? "✔️" : "⏳"} 
+        ${tugas.judul} - ${tugas.matkul} (${tugas.deadline})
+      </span>
+      <div>
+        <button onclick="toggleSelesai(${index})">✔️</button>
+        <button onclick="hapus(${index})">❌</button>
+      </div>
+    `;
+
+    kotak.appendChild(el);
+  });
+}
+
+// SELESAI / HAPUS
+function toggleSelesai(index) {
+  semuaDataTugas[index].selesai = !semuaDataTugas[index].selesai;
+  simpanData();
+  tampilkanTugas();
+  perbaruiDashboard();
+}
+
+function hapus(index) {
+  semuaDataTugas.splice(index, 1);
+  simpanData();
+  tampilkanTugas();
+  perbaruiDashboard();
+}
+
+// KALENDER
+function tampilkanKalender() {
+
+  var kalender = document.getElementById("isiKalender");
+  kalender.innerHTML = "";
+
+  // urutkan berdasarkan tanggal
+  var sorted = semuaDataTugas.sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
+
+  sorted.forEach(function(tugas) {
+
+    var el = document.createElement("p");
+
+    el.innerHTML = `
+      📌 <b>${tugas.deadline}</b> - ${tugas.judul} (${tugas.matkul})
+    `;
+
+    kalender.appendChild(el);
+  });
+
+  if (semuaDataTugas.length === 0) {
+    kalender.innerHTML = "<p>Belum ada tugas</p>";
   }
-
-  perbaruiDashboard();
 }
 
-
-function hapusTugas(tombolYangDiklik) {
-
-  tombolYangDiklik.parentElement.parentElement.remove();
-
-  perbaruiDashboard();
-}
-
-
+// DASHBOARD
 function perbaruiDashboard() {
 
-  var semuaTugas = document.querySelectorAll(".tugas-list p");
-
-  var totalTugas    = semuaTugas.length;
-  var tugasSelesai  = 0;
-  var deadlineDekat = 0;
+  var total = semuaDataTugas.length;
+  var selesai = semuaDataTugas.filter(t => t.selesai).length;
+  var belum = total - selesai;
 
   var hariIni = new Date();
+  var deadlineDekat = 0;
 
-  semuaTugas.forEach(function(satTugas) {
-
-    var teksnya = satTugas.querySelector(".task-text").textContent;
-
-    if (teksnya.includes("✔️")) {
-      tugasSelesai++;
-    }
-
-    var cocokkanTanggal = teksnya.match(/\d{4}-\d{2}-\d{2}/);
-
-    if (cocokkanTanggal) {
-      var tanggalDeadline = new Date(cocokkanTanggal[0]);
-
-      var selisihHari = (tanggalDeadline - hariIni) / (1000 * 60 * 60 * 24);
-
-      if (selisihHari <= 2 && selisihHari >= 0) {
-        deadlineDekat++;
-      }
+  semuaDataTugas.forEach(function(t) {
+    var selisih = (new Date(t.deadline) - hariIni) / (1000 * 60 * 60 * 24);
+    if (selisih <= 2 && selisih >= 0) {
+      deadlineDekat++;
     }
   });
 
-  document.getElementById("total").textContent         = totalTugas;
-  document.getElementById("selesai").textContent       = tugasSelesai;
-  document.getElementById("belum").textContent         = totalTugas - tugasSelesai;
+  document.getElementById("total").textContent = total;
+  document.getElementById("selesai").textContent = selesai;
+  document.getElementById("belum").textContent = belum;
   document.getElementById("deadlineDekat").textContent = deadlineDekat;
 }
+
+// LOCAL STORAGE
+function simpanData() {
+  localStorage.setItem("tugas", JSON.stringify(semuaDataTugas));
+}
+
+// INIT AWAL
+tampilkanTugas();
+perbaruiDashboard();
